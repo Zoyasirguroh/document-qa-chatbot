@@ -1,10 +1,9 @@
 # 📚 Document Q&A Chatbot with RAG
 
-![Python](https://img.shields.io/badge/Python-3.9+-blue?logo=python&logoColor=white)
-![LangChain](https://img.shields.io/badge/LangChain-Latest-green)
+![Python](https://img.shields.io/badge/Python-3.11+-blue?logo=python&logoColor=white)
+![LangChain](https://img.shields.io/badge/LangChain-1.0.8-green)
 ![OpenAI](https://img.shields.io/badge/OpenAI-GPT--4-blue)
 ![Streamlit](https://img.shields.io/badge/Streamlit-Latest-red)
-![License](https://img.shields.io/badge/License-MIT-yellow)
 
 Ask questions about your documents using Large Language Models and Retrieval Augmented Generation (RAG).
 
@@ -26,61 +25,43 @@ This chatbot allows you to upload PDF or TXT documents and ask natural language 
 - ⚡ Fast query responses
 - 🔒 Secure API key handling
 
-## 🎬 Demo
-
-[Add screenshot or GIF here - will create after building]
-
-**Try it live:** [Deployed App Link]
-
-## 🏗️ Architecture
-User Upload → Document Processing → Text Chunking
-↓
-Embeddings
-↓
-Vector Store (Chroma)
-↓
-User Query → Similarity Search → Relevant Chunks → LLM (GPT-4) → Answer
 ## 🚀 Quick Start
 
 ### Prerequisites
 
-- Python 3.9 or higher
+- Python 3.11 or higher
 - OpenAI API key ([Get one here](https://platform.openai.com/api-keys))
-- 4GB RAM minimum
 
 ### Installation
 
 1. **Clone the repository**
-\`\`\`bash
-git clone https://github.com/yourusername/document-qa-chatbot.git
+```bash
+git clone https://github.com/Zoyasirguroh/document-qa-chatbot.git
 cd document-qa-chatbot
-\`\`\`
+```
 
 2. **Create virtual environment**
-\`\`\`bash
+```bash
 python -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
-\`\`\`
+venv\Scripts\activate
+```
 
 3. **Install dependencies**
-\`\`\`bash
+```bash
 pip install -r requirements.txt
-\`\`\`
+```
 
 4. **Set up environment variables**
-\`\`\`bash
-cp .env.example .env
-\`\`\`
 
-Edit `.env` and add your OpenAI API key:
-\`\`\`
+Create a `.env` file in the root directory:
+```
 OPENAI_API_KEY=your_api_key_here
-\`\`\`
+```
 
 5. **Run the application**
-\`\`\`bash
+```bash
 streamlit run app.py
-\`\`\`
+```
 
 The app will open at `http://localhost:8501`
 
@@ -89,169 +70,87 @@ The app will open at `http://localhost:8501`
 1. **Upload Documents**
    - Click "Upload Documents" in the sidebar
    - Select one or more PDF or TXT files
-   - Wait for processing to complete
+   - Click "Process Documents" and wait for completion
 
 2. **Ask Questions**
    - Type your question in the chat input
-   - Press Enter or click Send
    - Get AI-generated answers based on your documents
 
 3. **View Sources**
    - Each answer includes source document references
-   - Click to see which parts of documents were used
 
 ## 🛠️ Tech Stack
 
 | Component | Technology | Purpose |
 |-----------|-----------|---------|
 | LLM | OpenAI GPT-4 | Generate answers |
-| Orchestration | LangChain | Chain components together |
-| Embeddings | OpenAI text-embedding-ada-002 | Convert text to vectors |
-| Vector DB | ChromaDB | Store and search embeddings |
+| Orchestration | LangChain 1.0.8 | RAG orchestration |
+| Embeddings | OpenAI text-embedding-ada-002 | Vector embeddings |
+| Vector DB | ChromaDB | Vector storage & search |
 | Frontend | Streamlit | User interface |
-| Language | Python 3.9+ | Core development |
-
-## 📊 How It Works
-
-### 1. Document Processing
-- Load PDF/TXT files
-- Split into chunks (1000 characters with 200 overlap)
-- Maintain document metadata
-
-### 2. Embedding Generation
-- Convert text chunks to vector embeddings
-- Use OpenAI's embedding model
-- Store in ChromaDB with metadata
-
-### 3. Query Processing
-- User asks a question
-- Question converted to embedding
-- Similarity search finds relevant chunks
-- Top 3-4 chunks retrieved
-
-### 4. Answer Generation
-- Relevant chunks sent to GPT-4 as context
-- GPT-4 generates answer based on context
-- Source documents cited
-
-## 🔧 Configuration
-
-Edit `src/config.py` to customize:
-
-\`\`\`python
-CHUNK_SIZE = 1000           # Characters per chunk
-CHUNK_OVERLAP = 200         # Overlap between chunks
-EMBEDDING_MODEL = "text-embedding-ada-002"
-LLM_MODEL = "gpt-4"
-TEMPERATURE = 0.1           # Lower = more focused
-MAX_TOKENS = 500            # Response length
-TOP_K = 4                   # Number of chunks to retrieve
-\`\`\`
+| Language | Python 3.11+ | Core development |
 
 ## 📂 Project Structure
 
-\`\`\`
+```
 document-qa-chatbot/
-│
-├── README.md                 # Main documentation
+├── README.md                 # Documentation
 ├── requirements.txt          # Dependencies
-├── .env.example             # Environment variables template
-├── .gitignore               # Files to ignore
-├── app.py                   # Main Streamlit application
-├── src/
-│   ├── __init__.py
-│   ├── document_processor.py   # PDF/TXT processing
-│   ├── vector_store.py         # Chroma vector DB
-│   ├── llm_chain.py            # LangChain setup
-│   └── utils.py                # Helper functions
-├── data/
-│   └── sample_documents/       # Sample PDFs for testing
-├── tests/
-│   └── test_document_processor.py
-├── docs/
-│   ├── architecture.md
-│   └── screenshots/
-└── notebooks/
-    └── exploration.ipynb       # Jupyter notebook for testing
-\`\`\`
+├── .env                      # Environment variables
+├── .gitignore                # Git ignore rules
+├── app.py                    # Main Streamlit app
+└── src/
+    ├── __init__.py
+    ├── document_processor.py  # PDF/TXT processing
+    ├── vector_store.py        # ChromaDB management
+    ├── llm_chain.py           # LangChain RAG setup
+    └── utils.py               # Helper functions
+```
+
+## 📊 How It Works
+
+1. **Document Processing** - Load and split PDF/TXT files into chunks
+2. **Embedding Generation** - Convert chunks to vector embeddings  
+3. **Vector Storage** - Store embeddings in ChromaDB
+4. **Query Processing** - Retrieve relevant chunks based on user query
+5. **Answer Generation** - Generate answers using GPT-4 with context
 
 ## 🧪 Testing
 
 Run unit tests:
-\`\`\`bash
+```bash
 pytest tests/
-\`\`\`
-
-Run with coverage:
-\`\`\`bash
-pytest --cov=src tests/
-\`\`\`
-
-## 🚧 Challenges & Solutions
-
-### Challenge 1: Large Document Processing
-**Problem:** PDFs over 10MB caused memory issues  
-**Solution:** Implemented streaming document loader with batched processing
-
-### Challenge 2: Irrelevant Answers
-**Problem:** Sometimes returned info not in documents  
-**Solution:** Added strict context filtering and source validation
-
-### Challenge 3: Slow Query Response
-**Problem:** Initial queries took 10+ seconds  
-**Solution:** Implemented caching and optimized chunk retrieval
-
-## 📈 Performance Metrics
-
-- **Query Response Time:** ~2-3 seconds
-- **Document Processing:** ~5 seconds per MB
-- **Accuracy:** 85%+ relevant answers (tested on 100 queries)
-- **Memory Usage:** ~500MB for 10 documents
+```
 
 ## 🔮 Future Improvements
 
 - [ ] Support for more file types (Word, Excel, PowerPoint)
 - [ ] Multiple vector store options (Pinecone, Weaviate)
 - [ ] Conversation memory (multi-turn chat)
-- [ ] User authentication and document privacy
-- [ ] Fine-tuning on domain-specific data
-- [ ] Deployment to AWS/GCP with API endpoint
-- [ ] Add speech-to-text for voice queries
-- [ ] Implement document summarization
-- [ ] Multi-language support
+- [ ] User authentication
+- [ ] Cloud deployment
 
 ## 🤝 Contributing
 
 Contributions welcome! Please:
 1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit changes (`git commit -m 'Add AmazingFeature'`)
-4. Push to branch (`git push origin feature/AmazingFeature`)
+2. Create a feature branch (`git checkout -b feature/YourFeature`)
+3. Commit changes (`git commit -m 'Add YourFeature'`)
+4. Push to branch (`git push origin feature/YourFeature`)
 5. Open a Pull Request
-
 
 ## 🙏 Acknowledgments
 
-- [LangChain](https://langchain.com/) for the amazing framework
-- [OpenAI](https://openai.com/) for GPT-4 and embeddings
-- [Streamlit](https://streamlit.io/) for the UI framework
-- [ChromaDB](https://www.trychroma.com/) for vector storage
+- [LangChain](https://langchain.com/) - RAG orchestration framework
+- [OpenAI](https://openai.com/) - GPT-4 and embeddings
+- [Streamlit](https://streamlit.io/) - Web app framework
+- [ChromaDB](https://www.trychroma.com/) - Vector database
 
 ## 👤 Author
 
-**Your Name**
-- 💼 Data Engineer @ PwC
-- 🎓 M.Tech in Data Science, BITS Pilani
-- 📫 [LinkedIn](your-linkedin) | [Twitter](your-twitter)
-- 📧 your.email@example.com
-
-## 🌟 Show Your Support
-
-If you found this helpful, please ⭐ star this repository!
+**Zoya Sirguroh**
+- [GitHub](https://github.com/Zoyasirguroh)
 
 ---
 
-**Built with ❤️ by [Your Name]**
-
-![Last Commit](https://img.shields.io/github/last-commit/yourusername/document-qa-chatbot)
-![Issues](https://img.shields.io/github/issues/yourusername/document-qa-chatbot)
+**Built with ❤️ by [Zoya Sirguroh](https://github.com/Zoyasirguroh)**
